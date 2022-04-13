@@ -35,7 +35,7 @@ func TestStack(t *testing.T) {
 func ShouldPanic(t *testing.T, f func()) {
 	defer func() {
 		if r := recover(); r == nil {
-			t.Errorf("panic with nil")
+			t.Errorf("did not panic")
 		}
 	}()
 
