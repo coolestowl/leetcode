@@ -7,11 +7,7 @@ func Reverse[T Elem](head *base.LinkListNode[T]) *base.LinkListNode[T] {
 		return head
 	}
 
-	var (
-		pre = head
-		cur = head.Next
-	)
-	head.Next = nil
+	pre, cur := (*base.LinkListNode[T])(nil), head
 
 	for cur != nil {
 		nxt := cur.Next
