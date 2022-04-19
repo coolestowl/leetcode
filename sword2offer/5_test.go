@@ -20,8 +20,3 @@ func TestFindNumberIn2DArray(t *testing.T) {
 		t.Errorf("???")
 	}
 }
-
-func TestHHH(t *testing.T) {
-	mid := (2 + 3) / 2
-	t.Error(mid)
-}

@@ -49,11 +49,6 @@ func TestSearch(t *testing.T) {
 	}
 }
 
-func FuzzBinSearch(f *testing.F) {
-	f.Fuzz(func(t *testing.T, nums []int, target, last int) {
-	})
-}
-
 func TestBinSearch(t *testing.T) {
 	indexOf := func(elems []int, target int) int {
 		for idx, elem := range elems {
