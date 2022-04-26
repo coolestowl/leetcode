@@ -20,9 +20,7 @@ func TestBinaryTree(t *testing.T) {
 
 	tr := drawBinTree(root)
 
-	fmt.Println(tr)
-
-	t.Error("??")
+	t.Log(tr)
 }
 
 func drawBinTree[T fmt.Stringer](root *base.BinTreeNode[T]) *tree.Tree {
