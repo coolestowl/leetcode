@@ -1,0 +1,4 @@
+# github.com/m1gwings/treedrawer v0.3.3-beta
+## explicit; go 1.14
+github.com/m1gwings/treedrawer/drawer
+github.com/m1gwings/treedrawer/tree
