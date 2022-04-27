@@ -1,5 +1,17 @@
 package sword2offer
 
+func FindRepeatNumber(nums []int) int {
+	mp := make(map[int]struct{})
+	for _, n := range nums {
+		if _, ok := mp[n]; ok {
+			return n
+		}
+
+		mp[n] = struct{}{}
+	}
+	return -1
+}
+
 func Search(nums []int, target int) int {
 	start := BinSearch(nums, target, 0)
 	if start == -1 {
@@ -82,4 +94,12 @@ func BinSearch(nums []int, target int, last int) int {
 	}
 
 	return -1
+}
+
+func MissingNumber(nums []int) int {
+	result := len(nums)
+	for i, n := range nums {
+		result ^= i ^ n
+	}
+	return result
 }

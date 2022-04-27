@@ -1,5 +1,36 @@
 package sword2offer
 
+import "github.com/coolestowl/leetcode/base"
+
+func ReversePrint[T Elem](head *base.LinkListNode[T]) []T {
+	s := base.NewStack[T]()
+	for ptr := head; ptr != nil; ptr = ptr.Next {
+		s.Push(ptr.Val)
+	}
+
+	result := make([]T, 0, s.Len())
+	for s.Len() > 0 {
+		result = append(result, s.Pop())
+	}
+	return result
+}
+
+func Reverse[T Elem](head *base.LinkListNode[T]) *base.LinkListNode[T] {
+	if head == nil || head.Next == nil {
+		return head
+	}
+
+	pre, cur := (*base.LinkListNode[T])(nil), head
+
+	for cur != nil {
+		nxt := cur.Next
+		cur.Next = pre
+		pre, cur = cur, nxt
+	}
+
+	return pre
+}
+
 type Node[T any] struct {
 	Val    T
 	Next   *Node[T]
