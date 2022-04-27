@@ -1,5 +1,5 @@
 # leetcode
 
-![Coverage](https://img.shields.io/badge/Coverage-72.9%25-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-67.1%25-yellow)
 
 For the weight of life.
