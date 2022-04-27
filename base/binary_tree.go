@@ -1,5 +1,11 @@
 package base
 
+import (
+	"fmt"
+
+	"github.com/m1gwings/treedrawer/tree"
+)
+
 type BinTreeNode[T any] struct {
 	Val   T
 	Left  *BinTreeNode[T]
@@ -63,4 +69,69 @@ func nonRecursive[T any](slice []T, isEmpty func(T) bool) *BinTreeNode[T] {
 	}
 
 	return nodes[0]
+}
+
+func DrawBinTree[T fmt.Stringer](root *BinTreeNode[T]) *tree.Tree {
+	tr := tree.NewTree(tree.NodeString(root.Val.String()))
+	drawBinTreeRecursively(tr, root)
+	return tr
+}
+
+func drawBinTreeRecursively[T fmt.Stringer](parent *tree.Tree, node *BinTreeNode[T]) {
+	if left := node.Left; left != nil {
+		tr := parent.AddChild(tree.NodeString(left.Val.String()))
+		drawBinTreeRecursively(tr, left)
+	}
+	if right := node.Right; right != nil {
+		tr := parent.AddChild(tree.NodeString(right.Val.String()))
+		drawBinTreeRecursively(tr, right)
+	}
+}
+
+func PreOrder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B) []B {
+	result := make([]B, 0)
+	preorder(root, f, &result)
+	return result
+}
+
+func preorder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B, output *[]B) {
+	if root == nil {
+		return
+	}
+
+	*output = append(*output, f(root))
+	preorder(root.Left, f, output)
+	preorder(root.Right, f, output)
+}
+
+func InOrder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B) []B {
+	result := make([]B, 0)
+	inorder(root, f, &result)
+	return result
+}
+
+func inorder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B, output *[]B) {
+	if root == nil {
+		return
+	}
+
+	inorder(root.Left, f, output)
+	*output = append(*output, f(root))
+	inorder(root.Right, f, output)
+}
+
+func PostOrder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B) []B {
+	result := make([]B, 0)
+	postorder(root, f, &result)
+	return result
+}
+
+func postorder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B, output *[]B) {
+	if root == nil {
+		return
+	}
+
+	postorder(root.Left, f, output)
+	postorder(root.Right, f, output)
+	*output = append(*output, f(root))
 }
