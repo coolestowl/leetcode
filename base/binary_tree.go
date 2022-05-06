@@ -1,15 +1,13 @@
 package base
 
 import (
-	"fmt"
-
 	"github.com/m1gwings/treedrawer/tree"
 )
 
-type BinTreeNode[T any] struct {
-	Val   T
-	Left  *BinTreeNode[T]
-	Right *BinTreeNode[T]
+type BinTreeNode struct {
+	Val   ElemType
+	Left  *BinTreeNode
+	Right *BinTreeNode
 }
 
 /*
@@ -22,34 +20,34 @@ to
   4     5  6
    7
 */
-func NewBinTreeFromSlice[T any](slice []T, isEmpty func(T) bool) *BinTreeNode[T] {
+func NewBinTreeFromSlice(slice []ElemType, isEmpty func(ElemType) bool) *BinTreeNode {
 	return nonRecursive(slice, isEmpty)
 	// return recursive(slice, 0, isEmpty)
 }
 
-func recursive[T any](slice []T, idx int, isEmpty func(T) bool) *BinTreeNode[T] {
+func recursive(slice []ElemType, idx int, isEmpty func(ElemType) bool) *BinTreeNode {
 	if idx >= len(slice) || isEmpty(slice[idx]) {
 		return nil
 	}
 
-	return &BinTreeNode[T]{
+	return &BinTreeNode{
 		Val:   slice[idx],
 		Left:  recursive(slice, idx*2+1, isEmpty),
 		Right: recursive(slice, idx*2+2, isEmpty),
 	}
 }
 
-func nonRecursive[T any](slice []T, isEmpty func(T) bool) *BinTreeNode[T] {
+func nonRecursive(slice []ElemType, isEmpty func(ElemType) bool) *BinTreeNode {
 	if len(slice) == 0 {
 		return nil
 	}
 
-	nodes := make([]*BinTreeNode[T], 0, len(slice))
+	nodes := make([]*BinTreeNode, 0, len(slice))
 	for idx := range slice {
 		if isEmpty(slice[idx]) {
 			nodes = append(nodes, nil)
 		} else {
-			nodes = append(nodes, &BinTreeNode[T]{
+			nodes = append(nodes, &BinTreeNode{
 				Val: slice[idx],
 			})
 		}
@@ -71,13 +69,13 @@ func nonRecursive[T any](slice []T, isEmpty func(T) bool) *BinTreeNode[T] {
 	return nodes[0]
 }
 
-func DrawBinTree[T fmt.Stringer](root *BinTreeNode[T]) *tree.Tree {
+func DrawBinTree(root *BinTreeNode) *tree.Tree {
 	tr := tree.NewTree(tree.NodeString(root.Val.String()))
 	drawBinTreeRecursively(tr, root)
 	return tr
 }
 
-func drawBinTreeRecursively[T fmt.Stringer](parent *tree.Tree, node *BinTreeNode[T]) {
+func drawBinTreeRecursively(parent *tree.Tree, node *BinTreeNode) {
 	if left := node.Left; left != nil {
 		tr := parent.AddChild(tree.NodeString(left.Val.String()))
 		drawBinTreeRecursively(tr, left)
@@ -88,50 +86,32 @@ func drawBinTreeRecursively[T fmt.Stringer](parent *tree.Tree, node *BinTreeNode
 	}
 }
 
-func PreOrder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B) []B {
-	result := make([]B, 0)
-	preorder(root, f, &result)
-	return result
-}
-
-func preorder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B, output *[]B) {
+func PreOrder(root *BinTreeNode, f func(*BinTreeNode)) {
 	if root == nil {
 		return
 	}
 
-	*output = append(*output, f(root))
-	preorder(root.Left, f, output)
-	preorder(root.Right, f, output)
+	f(root)
+	PreOrder(root.Left, f)
+	PreOrder(root.Right, f)
 }
 
-func InOrder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B) []B {
-	result := make([]B, 0)
-	inorder(root, f, &result)
-	return result
-}
-
-func inorder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B, output *[]B) {
+func InOrder(root *BinTreeNode, f func(*BinTreeNode)) {
 	if root == nil {
 		return
 	}
 
-	inorder(root.Left, f, output)
-	*output = append(*output, f(root))
-	inorder(root.Right, f, output)
+	InOrder(root.Left, f)
+	f(root)
+	InOrder(root.Right, f)
 }
 
-func PostOrder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B) []B {
-	result := make([]B, 0)
-	postorder(root, f, &result)
-	return result
-}
-
-func postorder[A, B any](root *BinTreeNode[A], f func(*BinTreeNode[A]) B, output *[]B) {
+func PostOrder(root *BinTreeNode, f func(*BinTreeNode)) {
 	if root == nil {
 		return
 	}
 
-	postorder(root.Left, f, output)
-	postorder(root.Right, f, output)
-	*output = append(*output, f(root))
+	PostOrder(root.Left, f)
+	PostOrder(root.Right, f)
+	f(root)
 }

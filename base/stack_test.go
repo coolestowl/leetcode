@@ -7,10 +7,10 @@ import (
 )
 
 func TestStack(t *testing.T) {
-	s := base.NewStack[int]()
+	s := base.NewStack()
 
 	for i := range make([]struct{}, 10) {
-		s.Push(i)
+		s.Push(base.ElemType(i))
 	}
 
 	if s.Top() != 9 {
@@ -18,7 +18,7 @@ func TestStack(t *testing.T) {
 	}
 
 	for i := range make([]struct{}, 10) {
-		expected := 9 - i
+		expected := base.ElemType(9 - i)
 		if got := s.Pop(); got != expected {
 			t.Errorf("expected %d, got %d", expected, got)
 		}

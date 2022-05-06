@@ -14,7 +14,7 @@ func (i stringerInt) String() string {
 }
 
 func TestBinaryTree(t *testing.T) {
-	root := base.NewBinTreeFromSlice([]stringerInt{1, 2, 3, 3, 4, 5, 6, -1, -1, 2, 3, 3, 3}, func(t stringerInt) bool { return t == -1 })
+	root := base.NewBinTreeFromSlice([]base.ElemType{1, 2, 3, 3, 4, 5, 6, -1, -1, 2, 3, 3, 3}, func(t base.ElemType) bool { return t == -1 })
 
 	tr := base.DrawBinTree(root)
 

@@ -1,29 +1,29 @@
 package base
 
-type LinkListNode[T any] struct {
-	Val  T
-	Next *LinkListNode[T]
+type LinkListNode struct {
+	Val  ElemType
+	Next *LinkListNode
 }
 
-func NewLinkList[T any](val T) *LinkListNode[T] {
-	return &LinkListNode[T]{
+func NewLinkList(val ElemType) *LinkListNode {
+	return &LinkListNode{
 		Val:  val,
 		Next: nil,
 	}
 }
 
-func (l *LinkListNode[T]) AppendTail(val T) {
+func (l *LinkListNode) AppendTail(val ElemType) {
 	if l == nil {
 		return
 	}
 
-	var ptr *LinkListNode[T]
+	var ptr *LinkListNode
 	for ptr = l; ptr.Next != nil; ptr = ptr.Next {
 	}
 	ptr.Next = NewLinkList(val)
 }
 
-func (l *LinkListNode[T]) InsertNext(val T) {
+func (l *LinkListNode) InsertNext(val ElemType) {
 	if l == nil {
 		return
 	}

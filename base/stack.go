@@ -1,23 +1,23 @@
 package base
 
-type Stack[T any] struct {
-	inner  []T
+type Stack struct {
+	inner  []ElemType
 	topPtr int
 }
 
-func NewStack[T any]() *Stack[T] {
-	return &Stack[T]{
-		inner:  make([]T, 0),
+func NewStack() *Stack {
+	return &Stack{
+		inner:  make([]ElemType, 0),
 		topPtr: -1,
 	}
 }
 
-func (s *Stack[T]) Push(elem T) {
+func (s *Stack) Push(elem ElemType) {
 	s.inner = append(s.inner, elem)
 	s.topPtr++
 }
 
-func (s *Stack[T]) Pop() T {
+func (s *Stack) Pop() ElemType {
 	if s.Len() > 0 {
 		elem := s.inner[s.topPtr]
 		s.inner = s.inner[:s.topPtr]
@@ -28,11 +28,11 @@ func (s *Stack[T]) Pop() T {
 	panic("empty stack")
 }
 
-func (s *Stack[T]) Len() int {
+func (s *Stack) Len() int {
 	return len(s.inner)
 }
 
-func (s *Stack[T]) Top() T {
+func (s *Stack) Top() ElemType {
 	if s.Len() > 0 {
 		return s.inner[s.topPtr]
 	}
