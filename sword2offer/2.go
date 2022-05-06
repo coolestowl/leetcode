@@ -2,25 +2,25 @@ package sword2offer
 
 import "github.com/coolestowl/leetcode/base"
 
-func ReversePrint[T Elem](head *base.LinkListNode[T]) []T {
-	s := base.NewStack[T]()
+func ReversePrint(head *base.LinkListNode) []base.ElemType {
+	s := base.NewStack()
 	for ptr := head; ptr != nil; ptr = ptr.Next {
 		s.Push(ptr.Val)
 	}
 
-	result := make([]T, 0, s.Len())
+	result := make([]base.ElemType, 0, s.Len())
 	for s.Len() > 0 {
 		result = append(result, s.Pop())
 	}
 	return result
 }
 
-func Reverse[T Elem](head *base.LinkListNode[T]) *base.LinkListNode[T] {
+func Reverse(head *base.LinkListNode) *base.LinkListNode {
 	if head == nil || head.Next == nil {
 		return head
 	}
 
-	pre, cur := (*base.LinkListNode[T])(nil), head
+	pre, cur := (*base.LinkListNode)(nil), head
 
 	for cur != nil {
 		nxt := cur.Next
@@ -31,36 +31,36 @@ func Reverse[T Elem](head *base.LinkListNode[T]) *base.LinkListNode[T] {
 	return pre
 }
 
-type Node[T any] struct {
-	Val    T
-	Next   *Node[T]
-	Random *Node[T]
+type Node struct {
+	Val    base.ElemType
+	Next   *Node
+	Random *Node
 }
 
-func CopyRandomList[T any](head *Node[T]) *Node[T] {
+func CopyRandomList(head *Node) *Node {
 	return NodeItemsToLinkList(LinkListToNodeItems(head))
 }
 
-type NodeItem[T any] struct {
-	Val       T
+type NodeItem struct {
+	Val       base.ElemType
 	RandomIdx int
 }
 
-func LinkListToNodeItems[T any](head *Node[T]) []NodeItem[T] {
-	count, ptrIdxMap := 0, make(map[*Node[T]]int)
+func LinkListToNodeItems(head *Node) []NodeItem {
+	count, ptrIdxMap := 0, make(map[*Node]int)
 	for ptr := head; ptr != nil; ptr = ptr.Next {
 		ptrIdxMap[ptr] = count
 		count++
 	}
 
-	result := make([]NodeItem[T], 0, count)
+	result := make([]NodeItem, 0, count)
 	for ptr := head; ptr != nil; ptr = ptr.Next {
 		randomIdx := -1
 		if ptr.Random != nil {
 			randomIdx = ptrIdxMap[ptr.Random]
 		}
 
-		result = append(result, NodeItem[T]{
+		result = append(result, NodeItem{
 			Val:       ptr.Val,
 			RandomIdx: randomIdx,
 		})
@@ -69,19 +69,19 @@ func LinkListToNodeItems[T any](head *Node[T]) []NodeItem[T] {
 	return result
 }
 
-func NodeItemsToLinkList[T any](items []NodeItem[T]) *Node[T] {
+func NodeItemsToLinkList(items []NodeItem) *Node {
 	if len(items) == 0 {
 		return nil
 	}
 
 	var (
-		h     *Node[T] = nil
-		tail           = h
-		nodes          = make([]*Node[T], len(items))
+		h     *Node = nil
+		tail        = h
+		nodes       = make([]*Node, len(items))
 	)
 
 	for i, item := range items {
-		newNode := &Node[T]{
+		newNode := &Node{
 			Val: item.Val,
 		}
 

@@ -12,11 +12,11 @@ func TestReversePrint(t *testing.T) {
 	head := base.NewLinkList(-1)
 
 	for i := range make([]struct{}, 10) {
-		head.AppendTail(i)
-		head.InsertNext(i)
+		head.AppendTail(base.ElemType(i))
+		head.InsertNext(base.ElemType(i))
 	}
 
-	expected := []int{
+	expected := []base.ElemType{
 		9, 8, 7, 6, 5, 4, 3, 2, 1, 0,
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 		-1,
@@ -44,18 +44,18 @@ func TestReverse(t *testing.T) {
 	head := base.NewLinkList(-1)
 
 	for i := range make([]struct{}, 10) {
-		head.AppendTail(i)
-		head.InsertNext(i)
+		head.AppendTail(base.ElemType(i))
+		head.InsertNext(base.ElemType(i))
 	}
 
 	head = sword2offer.Reverse(head)
 
-	expected := []int{
+	expected := []base.ElemType{
 		9, 8, 7, 6, 5, 4, 3, 2, 1, 0,
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 		-1,
 	}
-	reversed := make([]int, 0, len(expected))
+	reversed := make([]base.ElemType, 0, len(expected))
 	for ptr := head; ptr != nil; ptr = ptr.Next {
 		reversed = append(reversed, ptr.Val)
 	}
@@ -64,7 +64,7 @@ func TestReverse(t *testing.T) {
 		t.Errorf("expected %v, got %v", expected, reversed)
 	}
 
-	if got := sword2offer.Reverse[int](nil); got != nil {
+	if got := sword2offer.Reverse(nil); got != nil {
 		t.Errorf("expected nil")
 	}
 }
@@ -72,11 +72,11 @@ func TestReverse(t *testing.T) {
 func TestCopyRandomList(t *testing.T) {
 	N := 10
 
-	items := make([]sword2offer.NodeItem[int], 0, N)
+	items := make([]sword2offer.NodeItem, 0, N)
 
 	for i := range make([]struct{}, N) {
-		items = append(items, sword2offer.NodeItem[int]{
-			Val: i,
+		items = append(items, sword2offer.NodeItem{
+			Val: base.ElemType(i),
 			RandomIdx: func() int {
 				randIdx := rand.Intn(N + 1)
 				if randIdx == N {
@@ -111,7 +111,7 @@ func TestCopyRandomList(t *testing.T) {
 		}
 	}
 
-	copied = sword2offer.CopyRandomList[int](nil)
+	copied = sword2offer.CopyRandomList(nil)
 	if copied != nil {
 		t.Errorf("copied is not nil")
 	}

@@ -4,27 +4,23 @@ import (
 	"github.com/coolestowl/leetcode/base"
 )
 
-type Elem interface {
-	~int | ~int8 | ~int16 | ~int32 | ~int64 // and more, maybe any
+type StackToQueue struct {
+	s1 *base.Stack
+	s2 *base.Stack
 }
 
-type StackToQueue[T Elem] struct {
-	s1 *base.Stack[T]
-	s2 *base.Stack[T]
-}
-
-func NewStackToQueue[T Elem]() *StackToQueue[T] {
-	return &StackToQueue[T]{
-		s1: base.NewStack[T](),
-		s2: base.NewStack[T](),
+func NewStackToQueue() *StackToQueue {
+	return &StackToQueue{
+		s1: base.NewStack(),
+		s2: base.NewStack(),
 	}
 }
 
-func (s *StackToQueue[T]) AppendTail(elem T) {
+func (s *StackToQueue) AppendTail(elem base.ElemType) {
 	s.s1.Push(elem)
 }
 
-func (s *StackToQueue[T]) DeleteHead() T {
+func (s *StackToQueue) DeleteHead() base.ElemType {
 	if s.s2.Len() > 0 {
 		return s.s2.Pop()
 	}
@@ -40,57 +36,62 @@ func (s *StackToQueue[T]) DeleteHead() T {
 	return -1
 }
 
-type minItem[T Elem] struct {
-	current T
-	min     T
+type minItem struct {
+	current base.ElemType
+	min     base.ElemType
 }
 
-type MinStack[T Elem] struct {
-	inner *base.Stack[minItem[T]]
+type MinStack struct {
+	inner  []minItem
+	topPtr int
 }
 
-func NewMinStack[T Elem]() *MinStack[T] {
-	return &MinStack[T]{
-		inner: base.NewStack[minItem[T]](),
+func NewMinStack() *MinStack {
+	return &MinStack{
+		inner:  make([]minItem, 0),
+		topPtr: -1,
 	}
 }
 
-func (s *MinStack[T]) Push(elem T) {
+func (s *MinStack) Push(elem base.ElemType) {
 	min := elem
-	if s.inner.Len() > 0 {
-		topItem := s.inner.Top()
+	if len(s.inner) > 0 {
+		topItem := s.inner[s.topPtr]
 		if topItem.min < min {
 			min = topItem.min
 		}
 	}
 
-	s.inner.Push(minItem[T]{
+	s.inner = append(s.inner, minItem{
 		current: elem,
 		min:     min,
 	})
+	s.topPtr++
 }
 
-func (s *MinStack[T]) Pop() T {
-	if s.inner.Len() > 0 {
-		item := s.inner.Pop()
+func (s *MinStack) Pop() base.ElemType {
+	if len(s.inner) > 0 {
+		item := s.inner[s.topPtr]
+		s.inner = s.inner[:s.topPtr]
+		s.topPtr--
 		return item.current
 	}
 
 	return -1
 }
 
-func (s *MinStack[T]) Top() T {
-	if s.inner.Len() > 0 {
-		item := s.inner.Top()
+func (s *MinStack) Top() base.ElemType {
+	if len(s.inner) > 0 {
+		item := s.inner[s.topPtr]
 		return item.current
 	}
 
 	return -1
 }
 
-func (s *MinStack[T]) Min() T {
-	if s.inner.Len() > 0 {
-		item := s.inner.Top()
+func (s *MinStack) Min() base.ElemType {
+	if len(s.inner) > 0 {
+		item := s.inner[s.topPtr]
 		return item.min
 	}
 

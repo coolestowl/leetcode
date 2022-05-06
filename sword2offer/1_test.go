@@ -3,38 +3,39 @@ package sword2offer_test
 import (
 	"testing"
 
+	"github.com/coolestowl/leetcode/base"
 	"github.com/coolestowl/leetcode/sword2offer"
 )
 
 func TestStackToQueue(t *testing.T) {
-	s := sword2offer.NewStackToQueue[int]()
+	s := sword2offer.NewStackToQueue()
 
 	for i := range make([]struct{}, 10) {
-		s.AppendTail(i)
+		s.AppendTail(base.ElemType(i))
 	}
 
 	for i := range make([]struct{}, 10) {
-		if got := s.DeleteHead(); got != i {
+		if got := s.DeleteHead(); got != base.ElemType(i) {
 			t.Errorf("expected %d got %d", i, got)
 		}
 	}
 
 	for i := range make([]struct{}, 10) {
-		s.AppendTail(i)
+		s.AppendTail(base.ElemType(i))
 	}
 
 	for i := range make([]struct{}, 5) {
-		if got := s.DeleteHead(); got != i {
+		if got := s.DeleteHead(); got != base.ElemType(i) {
 			t.Errorf("expected %d got %d", i, got)
 		}
 	}
 
 	for i := range make([]struct{}, 10) {
-		s.AppendTail(i)
+		s.AppendTail(base.ElemType(i))
 	}
 
 	for _, i := range []int{5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9} {
-		if got := s.DeleteHead(); got != i {
+		if got := s.DeleteHead(); got != base.ElemType(i) {
 			t.Errorf("expected %d got %d", i, got)
 		}
 	}
@@ -47,10 +48,10 @@ func TestStackToQueue(t *testing.T) {
 }
 
 func TestMinStack(t *testing.T) {
-	s := sword2offer.NewMinStack[int]()
+	s := sword2offer.NewMinStack()
 
 	for i := range make([]struct{}, 10) {
-		s.Push(i)
+		s.Push(base.ElemType(i))
 
 		if got := s.Min(); got != 0 {
 			t.Errorf("expected %d, got %d", 0, got)
@@ -62,13 +63,13 @@ func TestMinStack(t *testing.T) {
 	}
 
 	for i := range make([]struct{}, 10) {
-		expected := 9 - i
+		expected := base.ElemType(9 - i)
 		if got := s.Pop(); got != expected {
 			t.Errorf("expected %d, got %d", expected, got)
 		}
 	}
 
-	for _, f := range []func() int{
+	for _, f := range []func() base.ElemType{
 		s.Pop, s.Top, s.Min,
 	} {
 		if got := f(); got != -1 {
@@ -77,7 +78,7 @@ func TestMinStack(t *testing.T) {
 	}
 
 	for i := range make([]struct{}, 10) {
-		elem := 9 - i
+		elem := base.ElemType(9 - i)
 
 		s.Push(elem)
 

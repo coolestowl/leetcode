@@ -4,10 +4,10 @@ import (
 	"github.com/coolestowl/leetcode/base"
 )
 
-func LevelOrderI[T any](root *base.BinTreeNode[T]) []T {
-	result := make([]T, 0)
+func LevelOrderI(root *base.BinTreeNode) []base.ElemType {
+	result := make([]base.ElemType, 0)
 
-	for queue, ptr, currentLen := []*base.BinTreeNode[T]{root}, 0, 1; ptr < len(queue); ptr, currentLen = currentLen, len(queue) {
+	for queue, ptr, currentLen := []*base.BinTreeNode{root}, 0, 1; ptr < len(queue); ptr, currentLen = currentLen, len(queue) {
 		for idx := ptr; idx < currentLen; idx++ {
 			node := queue[idx]
 			if node == nil {
@@ -21,11 +21,11 @@ func LevelOrderI[T any](root *base.BinTreeNode[T]) []T {
 	return result
 }
 
-func LevelOrderII[T any](root *base.BinTreeNode[T]) [][]T {
-	result := make([][]T, 0)
+func LevelOrderII(root *base.BinTreeNode) [][]base.ElemType {
+	result := make([][]base.ElemType, 0)
 
-	for queue, ptr, currentLen := []*base.BinTreeNode[T]{root}, 0, 1; ptr < len(queue); ptr, currentLen = currentLen, len(queue) {
-		vals := make([]T, 0, currentLen-ptr)
+	for queue, ptr, currentLen := []*base.BinTreeNode{root}, 0, 1; ptr < len(queue); ptr, currentLen = currentLen, len(queue) {
+		vals := make([]base.ElemType, 0, currentLen-ptr)
 
 		for idx := ptr; idx < currentLen; idx++ {
 			node := queue[idx]
@@ -44,11 +44,11 @@ func LevelOrderII[T any](root *base.BinTreeNode[T]) [][]T {
 	return result
 }
 
-func LevelOrderIII[T any](root *base.BinTreeNode[T]) [][]T {
-	result, queue := make([][]T, 0, 1), []*base.BinTreeNode[T]{root}
+func LevelOrderIII(root *base.BinTreeNode) [][]base.ElemType {
+	result, queue := make([][]base.ElemType, 0, 1), []*base.BinTreeNode{root}
 
 	for reversed, ptr, currentLen := false, 0, 1; ptr < len(queue); reversed, ptr, currentLen = !reversed, currentLen, len(queue) {
-		vals := make([]T, 0, currentLen-ptr)
+		vals := make([]base.ElemType, 0, currentLen-ptr)
 
 		for idx := currentLen - 1; idx >= ptr; idx-- {
 			node := queue[idx]
